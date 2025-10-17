@@ -1,54 +1,88 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Retro Games Batman</title>
+
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AOS (Animate On Scroll) -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
   <style>
-    :root {
-      --bg-dark: #0b0b0f;
-      --panel: #101216;
-      --muted: #9aa0a6;
-      --accent: #f2c400;
-      --glass: rgba(255, 255, 255, 0.03);
+    :root{
+      --bg-dark:#0b0b0f;
+      --panel:#101216;
+      --muted:#9aa0a6;
+      --accent:#f2c400;
+      --glass: rgba(255,255,255,0.03);
     }
-    body {
-      background: linear-gradient(180deg, var(--bg-dark), #07070a 120%);
-      color: #e6e6e6;
-      font-family: 'Segoe UI', Roboto, Arial;
+    html,body{ height:100%; }
+    body{
+      background: linear-gradient(180deg,var(--bg-dark), #07070a 120%);
+      color:#e6e6e6;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      scroll-behavior: smooth;
     }
-    .navbar-brand img {
-      height: 45px;
-      margin-right: 10px;
+
+    /* NAV */
+    .navbar-brand img{ height:48px; margin-right:10px; }
+
+    .nav-link { color: rgba(230,230,230,0.85) !important; }
+    .nav-link.active, .nav-link:hover { color: var(--accent) !important; }
+
+    /* Sections & cards */
+    section{ padding:4rem 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .card-product{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:12px;
+      overflow:hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
     }
-    .nav-link:hover, .nav-link.active { color: var(--accent) !important; }
-    .card-product {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02));
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 12px;
-      transition: transform .15s ease, box-shadow .15s ease;
+    .card-product:hover{ transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.6); }
+    .card-product img{ height:200px; object-fit:cover; }
+
+    /* Hero entrance */
+    .hero-title{ font-size:2.25rem; margin-bottom:.5rem; }
+    .hero-sub{ color:var(--muted); margin-bottom:1rem; }
+    .hero-btn{ transform: translateY(12px); opacity:0; transition: all .6s cubic-bezier(.2,.9,.2,1); }
+    .hero-btn.show{ transform: translateY(0); opacity:1; }
+
+    /* AOS consistency */
+    [data-aos]{ opacity:0; transition-property: opacity, transform; }
+
+    footer{ color:var(--muted); padding:2rem 0; }
+
+    /* Responsive tweaks */
+    @media (max-width:576px){
+      .hero-title { font-size:1.5rem; }
+      .card-product img{ height:140px; }
     }
-    .card-product:hover { transform: translateY(-6px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); }
-    .accent { color: var(--accent); }
-    footer { color: var(--muted); padding: 2rem 0; }
-    section { padding-top: 4rem; padding-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
   </style>
 </head>
 <body>
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="#inicio">
-        <img src="logo retro games batman.png" alt="Retro Games Batman Logo">
+        <!-- Logo local: coloca 'logo retro games batman.png' en la misma carpeta -->
+        <img src="logo retro games batman.png" alt="Retro Games Batman Logo" />
         <span class="fw-bold text-warning">Retro Games Batman</span>
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
           <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="#consolas">Consolas</a></li>
           <li class="nav-item"><a class="nav-link" href="#juegos">Juegos Retro</a></li>
@@ -62,148 +96,234 @@
   </nav>
 
   <!-- HERO -->
-  <header id="inicio" class="text-center mt-5 pt-5">
-    <div class="container">
-      <h1 class="fw-bold text-warning">Tu Batiseñal Hacia el Pasado</h1>
-      <p class="text-muted">Explora consolas clásicas, juegos retro, accesorios y coleccionables únicos inspirados en Gotham.</p>
-      <a href="#consolas" class="btn btn-warning text-dark mt-3">Explorar catálogo</a>
+  <header id="inicio" class="pt-5" style="padding-top:100px;">
+    <div class="container text-center">
+      <h1 class="hero-title fw-bold text-warning" data-aos="fade-down" data-aos-duration="900">Tu Batiseñal Hacia el Pasado</h1>
+      <p class="hero-sub lead" data-aos="fade-up" data-aos-duration="900" data-aos-delay="120">Explora consolas clásicas, juegos retro, accesorios y coleccionables únicos inspirados en Gotham.</p>
+      <a href="#consolas" id="heroBtn" class="btn btn-warning text-dark mt-2" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="250">Explorar catálogo</a>
     </div>
   </header>
 
-  <!-- SECCIÓN CONSOLAS -->
-  <section id="consolas" class="container">
-    <h2 class="text-center text-warning mb-4">Consolas Clásicas</h2>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/NES-Console-Set.jpg" class="card-img-top" alt="NES">
-          <div class="card-body"><h6>Nintendo NES</h6><p class="text-muted">Incluye mando y cartucho original.</p></div>
+  <!-- CONSOLAS -->
+  <section id="consolas">
+    <div class="container">
+      <h2 class="text-center text-warning mb-4" data-aos="fade-up">Consolas Clásicas</h2>
+      <div class="row g-3">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="80">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/NES-Console-Set.jpg" alt="Nintendo NES" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Nintendo NES</h6>
+              <p class="text-muted small">Incluye mando y cartucho original.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Sega-Genesis-Mod1-Set.jpg" class="card-img-top" alt="SEGA Genesis">
-          <div class="card-body"><h6>Sega Genesis</h6><p class="text-muted">Consola legendaria de los 90s.</p></div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="160">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Sega-Genesis-Mod1-Set.jpg" alt="SEGA Genesis" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Sega Genesis</h6>
+              <p class="text-muted small">Consola legendaria de los 90s.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Sony-PlayStation-Console-FL.jpg" class="card-img-top" alt="PlayStation">
-          <div class="card-body"><h6>PlayStation Classic</h6><p class="text-muted">Versión mini con juegos integrados.</p></div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/PlayStation_Classic.jpg" alt="PlayStation Classic" class="card-img-top" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/0f/PSone-console.jpg'">
+            <div class="card-body">
+              <h6 class="card-title">PlayStation Classic</h6>
+              <p class="text-muted small">Versión mini con juegos integrados.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECCIÓN JUEGOS RETRO -->
-  <section id="juegos" class="container">
-    <h2 class="text-center text-warning mb-4">Juegos Retro</h2>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/en/9/9f/Sonic_the_Hedgehog_1_Genesis_box_art.jpg" class="card-img-top" alt="Sonic">
-          <div class="card-body"><h6>Sonic the Hedgehog</h6><p class="text-muted">Clásico de SEGA para Megadrive.</p></div>
+  <!-- JUEGOS RETRO -->
+  <section id="juegos">
+    <div class="container">
+      <h2 class="text-center text-warning mb-4" data-aos="fade-up">Juegos Retro</h2>
+      <div class="row g-3">
+        <div class="col-md-4" data-aos="fade-right" data-aos-delay="80">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/en/9/9f/Sonic_the_Hedgehog_1_Genesis_box_art.jpg" alt="Sonic the Hedgehog" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Sonic the Hedgehog</h6>
+              <p class="text-muted small">Clásico de SEGA para Megadrive.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/en/e/e7/Super_Mario_Bros._box.png" class="card-img-top" alt="Super Mario Bros">
-          <div class="card-body"><h6>Super Mario Bros</h6><p class="text-muted">El juego que definió una era.</p></div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="160">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/en/e/e7/Super_Mario_Bros._box.png" alt="Super Mario Bros" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Super Mario Bros</h6>
+              <p class="text-muted small">El juego que definió una era.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/en/9/9d/The_Legend_of_Zelda_Box_Art.jpg" class="card-img-top" alt="Zelda">
-          <div class="card-body"><h6>The Legend of Zelda</h6><p class="text-muted">Aventura clásica en Hyrule.</p></div>
+
+        <div class="col-md-4" data-aos="fade-left" data-aos-delay="240">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/en/9/9d/The_Legend_of_Zelda_Box_Art.jpg" alt="The Legend of Zelda" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">The Legend of Zelda</h6>
+              <p class="text-muted small">Aventura clásica en Hyrule.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECCIÓN ACCESORIOS -->
-  <section id="accesorios" class="container">
-    <h2 class="text-center text-warning mb-4">Accesorios</h2>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/54/Nintendo-Switch-Pro-Controller.png" class="card-img-top" alt="Control retro">
-          <div class="card-body"><h6>Control inalámbrico retro</h6><p class="text-muted">Diseño ergonómico y conexión Bluetooth.</p></div>
+  <!-- ACCESORIOS -->
+  <section id="accesorios">
+    <div class="container">
+      <h2 class="text-center text-warning mb-4" data-aos="fade-up">Accesorios</h2>
+      <div class="row g-3">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="80">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/54/Nintendo-Switch-Pro-Controller.png" alt="Control Retro" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Control inalámbrico retro</h6>
+              <p class="text-muted small">Diseño ergonómico y conexión Bluetooth.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Sega_Dreamcast_VMUs.jpg" class="card-img-top" alt="Memory Unit">
-          <div class="card-body"><h6>Memory Unit SEGA</h6><p class="text-muted">Guarda tus partidas con estilo.</p></div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="160">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Sega_Dreamcast_VMUs.jpg" alt="Memory Unit" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Memory Unit SEGA</h6>
+              <p class="text-muted small">Guarda tus partidas con estilo.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Nintendo_64_controller_gray.jpg" class="card-img-top" alt="Control N64">
-          <div class="card-body"><h6>Control N64 original</h6><p class="text-muted">Autenticidad garantizada.</p></div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Nintendo_64_controller_gray.jpg" alt="Control N64" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Control N64 original</h6>
+              <p class="text-muted small">Autenticidad garantizada.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECCIÓN COLECCIONABLES -->
-  <section id="coleccionables" class="container">
-    <h2 class="text-center text-warning mb-4">Coleccionables</h2>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Batman_Arkham_City_cover.jpg" class="card-img-top" alt="Batman Figura">
-          <div class="card-body"><h6>Figura Batman Edición Limitada</h6><p class="text-muted">Inspirada en Arkham City.</p></div>
+  <!-- COLECCIONABLES -->
+  <section id="coleccionables">
+    <div class="container">
+      <h2 class="text-center text-warning mb-4" data-aos="fade-up">Coleccionables</h2>
+      <div class="row g-3">
+        <div class="col-md-4" data-aos="flip-left" data-aos-delay="80">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Batman_Arkham_City_cover.jpg" alt="Figura Batman" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Figura Batman Edición Limitada</h6>
+              <p class="text-muted small">Inspirada en Arkham City.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/en/0/05/The_Legend_of_Zelda_Majora%27s_Mask_Collector%27s_Edition.jpg" class="card-img-top" alt="Zelda Mask">
-          <div class="card-body"><h6>Máscara de Majora</h6><p class="text-muted">Coleccionable edición de lujo.</p></div>
+
+        <div class="col-md-4" data-aos="flip-up" data-aos-delay="160">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/05/The_Legend_of_Zelda_Majora%27s_Mask_Collector%27s_Edition.jpg" alt="Máscara Majora" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Máscara de Majora - Edición</h6>
+              <p class="text-muted small">Coleccionable de lujo.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-product">
-          <img src="https://upload.wikimedia.org/wikipedia/en/5/50/Pacman_Arcade_Game.jpg" class="card-img-top" alt="Pacman mini arcade">
-          <div class="card-body"><h6>Mini Arcade Pac-Man</h6><p class="text-muted">Versión de escritorio iluminada.</p></div>
+
+        <div class="col-md-4" data-aos="flip-right" data-aos-delay="240">
+          <div class="card card-product h-100">
+            <img src="https://upload.wikimedia.org/wikipedia/en/5/50/Pacman_Arcade_Game.jpg" alt="Mini Arcade Pac-Man" class="card-img-top">
+            <div class="card-body">
+              <h6 class="card-title">Mini Arcade Pac-Man</h6>
+              <p class="text-muted small">Versión de escritorio iluminada.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECCIÓN NOSOTROS -->
-  <section id="nosotros" class="container text-center">
-    <h2 class="text-warning mb-4">Acerca de Nosotros</h2>
-    <p class="lead text-muted">Retro Games Batman nació del amor por los videojuegos clásicos y la estética de Gotham. Nuestro objetivo es traer de vuelta la nostalgia y la emoción de las consolas y juegos que marcaron generaciones. Cada producto es cuidadosamente seleccionado para ofrecer calidad y autenticidad.</p>
+  <!-- NOSOTROS -->
+  <section id="nosotros">
+    <div class="container text-center">
+      <h2 class="text-warning mb-4" data-aos="fade-up">Acerca de Nosotros</h2>
+      <p class="lead text-muted" data-aos="fade-up" data-aos-delay="120">Retro Games Batman nació del amor por los videojuegos clásicos y la estética de Gotham. Seleccionamos productos auténticos para revivir la nostalgia de generaciones.</p>
+    </div>
   </section>
 
-  <!-- SECCIÓN CONTACTO -->
-  <section id="contacto" class="container text-center">
-    <h2 class="text-warning mb-4">Contacto</h2>
-    <p class="text-muted">¿Tienes dudas o deseas realizar un pedido especial? Escríbenos.</p>
-    <form class="row g-3 justify-content-center">
-      <div class="col-md-6">
-        <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="Tu nombre" required>
-      </div>
-      <div class="col-md-6">
-        <input type="email" class="form-control bg-dark text-light border-secondary" placeholder="Correo electrónico" required>
-      </div>
-      <div class="col-12">
-        <textarea class="form-control bg-dark text-light border-secondary" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
-      </div>
-      <div class="col-12">
-        <button type="submit" class="btn btn-warning text-dark">Enviar mensaje</button>
-      </div>
-    </form>
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="container text-center">
+      <h2 class="text-warning mb-4" data-aos="fade-up">Contacto</h2>
+      <p class="text-muted" data-aos="fade-up" data-aos-delay="100">¿Dudas o pedidos especiales? Escríbenos.</p>
+
+      <form class="row g-3 justify-content-center" data-aos="fade-up" data-aos-delay="160" onsubmit="event.preventDefault(); alert('Mensaje enviado (simulado)');">
+        <div class="col-md-6">
+          <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="Tu nombre" required>
+        </div>
+        <div class="col-md-6">
+          <input type="email" class="form-control bg-dark text-light border-secondary" placeholder="Correo electrónico" required>
+        </div>
+        <div class="col-12">
+          <textarea class="form-control bg-dark text-light border-secondary" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-warning text-dark">Enviar mensaje</button>
+        </div>
+      </form>
+    </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="text-center mt-5">
+  <footer class="text-center">
     <small>© <span id="year"></span> Retro Games Batman — Tu batiseñal hacia el pasado</small>
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Inicializar AOS
+    AOS.init({
+      duration: 700,
+      easing: 'ease-out-cubic',
+      once: true, // animar solo la primera vez
+      mirror: false
+    });
+
+    // Hero button entrance small enhancement (ensures visible after AOS initializes)
+    window.addEventListener('load', function(){
+      const btn = document.getElementById('heroBtn');
+      // si AOS ya animó, sólo forzamos la clase 'show' para la transición extra
+      setTimeout(()=> btn.classList.add('show'), 300);
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+
+    // Small fallback for images that sometimes fail: replace with a neutral placeholder
+    document.addEventListener('error', function(e){
+      const t = e.target;
+      if (t.tagName.toLowerCase() === 'img') {
+        if (!t.dataset.fallbackApplied) {
+          t.dataset.fallbackApplied = '1';
+          t.src = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
+        }
+      }
+    }, true);
+  </script>
 </body>
 </html>
